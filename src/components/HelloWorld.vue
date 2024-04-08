@@ -1,58 +1,105 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint" target="_blank" rel="noopener">eslint</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
+  <div>
+    <div><button @click="hcy_getLocalSSOToken">获取token</button></div>
+
+    <div>
+      url<input type="text" v-model="newWindowUrl" /><br/>
+      <button @click="openWindow">打开新window</button>
+    </div>
+
+    <div>
+      <input type="checkbox" v-model="allChecked" />全部
+      <input type="checkbox" v-model="personChecked" />人物
+      <input type="checkbox" v-model="thingChecked" />事物
+      <input type="checkbox" v-model="locChecked" />地点
+    </div>
+    <div>
+      本地相册最大值mb<input type="number" v-model="locSize" /><br/>
+      云相册最大值mb<input type="number" v-model="cloudSize" />
+    </div>
+    <div>
+      本地相册限制格式<input type="text" v-model="locExt" /><br/>
+      云相册限制格式b<input type="text" v-model="cloudExt"  />
+    </div>
+    <div> <button @click="selectPhoto">选择相片</button></div>
+    <div> <img :src="cloudUrl" style="width: 200px;" /></div>
   </div>
 </template>
 
-<script>
-export default {
-  name: 'HelloWorld',
-  props: {
-    msg: String
+<script setup>
+import { ref } from 'vue';
+import { Base64 } from 'js-base64';
+const allChecked = ref(true);
+const personChecked = ref(true);
+const thingChecked = ref(true);
+const locChecked = ref(true);
+const locSize = ref(10);
+const cloudSize = ref(10);
+const locExt = ref('jpg/jpeg/png/webp/bmp/heic/livp');
+const cloudExt = ref('jpg/jpeg/png/webp/bmp/heic/livp');
+
+const newWindowUrl = ref("http://www.baidu.com");
+
+/* eslint-disable */
+const cloudUrl = ref("https://img1.baidu.com/it/u=1965663592,580944689&fm=253&app=120&size=w931&n=0&f=JPEG&fmt=auto?sec=1712077200&t=dbdc0da29ffc3858139a0c988c04a14a");
+window.hcy_getLocalSSOTokenCallback = function (token) {
+  alert("token=" + token);
+}
+
+
+let imgData;
+
+window.selectPhotoCallback = function (data) {
+  let obj = JSON.parse(Base64.decode(data));
+  console.log("selectPhotoCallback,obj=" + JSON.stringify(obj));
+  if (obj.url) {
+    cloudUrl.value = obj.url;
+  } else if (obj.data) {
+    if (obj.index == 0) {
+      imgData = obj.data;
+    } else {
+      imgData += obj.data;
+    }
+    if (obj.index == obj.total - 1) {
+      //结束
+      cloudUrl.value = "data:image/png;base64," + imgData;
+    }
   }
 }
-</script>
+
+function openWindow(){
+    window.open(newWindowUrl.value);
+}
+
+function hcy_getLocalSSOToken() {
+  if (typeof hcy != 'undefined') {
+    hcy.hcy_getLocalSSOToken()
+  }
+}
+function selectPhoto() {
+    let json = JSON.stringify({
+      action: "老骨头生成",
+      categoryParam: {
+        cloudPhotoSize: Math.ceil(cloudSize.value * 1024 * 1024),
+        localPhotoSize: Math.ceil(locSize.value * 1024 * 1024),
+        cloudPhotoFormat: cloudExt.value,
+        localPhotoFormat: locExt.value,
+        allPhoto: allChecked.value,
+        personPhoto: personChecked.value,
+        thingPhoto: thingChecked.value,
+        locationPhoto: locChecked.value
+      }
+    });
+    console.log(json);
+  if (typeof hcy != 'undefined') {
+    hcy.selectPhoto(Base64.encode(json));
+  }
+}
+</script>}
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
+div div {
+  margin-top: 50px;
 }
 </style>
