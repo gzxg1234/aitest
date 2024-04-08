@@ -64,7 +64,7 @@ window.selectPhotoCallback = function (data) {
     }
     if (obj.index == obj.total) {
       //结束
-      cloudUrl.value = "data:image/png;base64," + imgData;
+      cloudUrl.value = obj.photoFormat + imgData;
     }
   }
 }
