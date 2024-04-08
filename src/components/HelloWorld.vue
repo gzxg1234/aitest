@@ -52,6 +52,10 @@ window.hcy_getLocalSSOTokenCallback = function (token) {
 let imgData;
 
 window.selectPhotoCallback = function (data) {
+  if(!data){
+    console.log("取消选择");
+    return;
+  }
   let obj = JSON.parse(Base64.decode(data));
   console.log("selectPhotoCallback,obj=" + JSON.stringify(obj));
   if (obj.url) {
