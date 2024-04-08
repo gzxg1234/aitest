@@ -40,7 +40,7 @@ const cloudSize = ref(10);
 const locExt = ref('jpg/jpeg/png/webp/bmp/heic/livp');
 const cloudExt = ref('jpg/jpeg/png/webp/bmp/heic/livp');
 
-const newWindowUrl = ref("http://www.baidu.com");
+const newWindowUrl = ref("https://test.yun.139.com/viewtest/ai-helper/");
 
 /* eslint-disable */
 const cloudUrl = ref("https://img1.baidu.com/it/u=1965663592,580944689&fm=253&app=120&size=w931&n=0&f=JPEG&fmt=auto?sec=1712077200&t=dbdc0da29ffc3858139a0c988c04a14a");
