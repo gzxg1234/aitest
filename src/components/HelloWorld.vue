@@ -74,15 +74,15 @@ function openWindow(){
 }
 
 function hcy_getLocalSSOToken() {
-  if (typeof hcy != 'undefined') {
-    hcy.hcy_getLocalSSOToken()
+  if (typeof nativeAbility != 'undefined') {
+    nativeAbility.hcy_getLocalSSOToken()
   }
 }
 
 
 function getToken(){
-  if (typeof hcy != 'undefined') {
-    loginInfo.value = hcy.getLoginInfo();
+  if (typeof nativeAbility != 'undefined') {
+    loginInfo.value = nativeAbility.getLoginInfo();
   }
 }
 
@@ -101,8 +101,8 @@ function selectPhoto() {
       }
     });
     console.log(json);
-  if (typeof hcy != 'undefined') {
-    hcy.selectPhoto(Base64.encode(json));
+  if (typeof nativeAbility != 'undefined') {
+    nativeAbility.selectPhoto(Base64.encode(json));
   }
 }
 </script>}
