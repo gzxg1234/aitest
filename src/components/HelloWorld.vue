@@ -55,12 +55,12 @@ window.selectPhotoCallback = function (data) {
   if (obj.url) {
     cloudUrl.value = obj.url;
   } else if (obj.data) {
-    if (obj.index == 0) {
+    if (obj.index == 1) {
       imgData = obj.data;
     } else {
       imgData += obj.data;
     }
-    if (obj.index == obj.total - 1) {
+    if (obj.index == obj.total) {
       //结束
       cloudUrl.value = "data:image/png;base64," + imgData;
     }
