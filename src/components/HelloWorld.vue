@@ -98,10 +98,10 @@ function selectPhoto() {
         localPhotoSize: Math.ceil(locSize.value * 1024 * 1024),
         cloudPhotoFormat: cloudExt.value,
         localPhotoFormat: locExt.value,
-        allPhoto: allChecked.value,
-        personPhoto: personChecked.value,
-        thingPhoto: thingChecked.value,
-        locationPhoto: locChecked.value
+        allPhoto: allChecked.value?1:2,
+        personPhoto: personChecked.value?1:2,
+        thingPhoto: thingChecked.value?1:2,
+        locationPhoto: locChecked.value?1:2
       }
     });
     console.log(json);
