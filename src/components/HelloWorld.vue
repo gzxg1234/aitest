@@ -1,6 +1,7 @@
 <template>
   <div>
-    <div><button @click="hcy_getLocalSSOToken">获取token</button></div>
+    <div><button @click="getToken">获取token</button></div>
+    <div>{{  }}</div>
 
     <div>
       url<input type="text" v-model="newWindowUrl" /><br/>
@@ -29,6 +30,7 @@
 <script setup>
 import { ref } from 'vue';
 import { Base64 } from 'js-base64';
+const loginInfo=ref("");
 const allChecked = ref(true);
 const personChecked = ref(true);
 const thingChecked = ref(true);
@@ -76,6 +78,14 @@ function hcy_getLocalSSOToken() {
     hcy.hcy_getLocalSSOToken()
   }
 }
+
+
+function getToken(){
+  if (typeof hcy != 'undefined') {
+    loginInfo.value = hcy.getLoginInfo();
+  }
+}
+
 function selectPhoto() {
     let json = JSON.stringify({
       action: "老骨头生成",
