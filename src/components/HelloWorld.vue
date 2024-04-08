@@ -1,7 +1,7 @@
 <template>
   <div>
     <div><button @click="getToken">获取token</button></div>
-    <div>{{  }}</div>
+    <div>{{ loginInfo }}</div>
 
     <div>
       url<input type="text" v-model="newWindowUrl" /><br/>
